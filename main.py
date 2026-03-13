@@ -31,6 +31,7 @@ from fastapi.staticfiles import StaticFiles
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
 from starlette.middleware.sessions import SessionMiddleware
 
 app.add_middleware(
