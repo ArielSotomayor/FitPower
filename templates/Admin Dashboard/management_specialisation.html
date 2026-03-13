@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Specialisations Management | FitPower Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --sidebar-bg: #0b0e14;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --bg-body: #f4f6f9;
+            --success-color: #2ed573;
+            --danger-color: #ff6b6b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- Sidebar Redesign --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .sidebar-header h4 {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin: 0;
+            background: linear-gradient(to right, var(--accent-color), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .sidebar a {
+            color: rgba(255,255,255,0.7);
+            padding: 14px 25px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 400;
+            font-size: 0.95rem;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255,255,255,0.05);
+            color: #fff;
+            border-left-color: var(--accent-color);
+        }
+
+        .sidebar a.active {
+            background-color: rgba(67, 97, 238, 0.15);
+            color: #fff;
+            font-weight: 500;
+            border-left-color: var(--primary-color);
+        }
+
+        .sidebar .logout-btn {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255, 107, 107, 0.8) !important;
+        }
+        .sidebar .logout-btn:hover {
+            background-color: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b !important;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 30px 40px;
+            width: 100%;
+            transition: margin-left 0.3s ease;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-banner::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .welcome-banner h1 {
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        /* --- Toolbar --- */
+        .toolbar-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .toolbar-card h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        /* --- Buttons --- */
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
+        }
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+        }
+
+        /* --- Table Card --- */
+        .table-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .table { margin-bottom: 0; }
+        
+        .table thead th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 15px 20px;
+        }
+
+        .table tbody tr { transition: 0.2s; }
+        .table tbody tr:hover { background-color: rgba(67, 97, 238, 0.03); }
+
+        .table td {
+            padding: 15px 20px;
+            vertical-align: middle;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            border-top: 1px solid #f1f1f1;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: none;
+            transition: 0.2s;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        .btn-action i { font-size: 0.9rem; }
+        
+        .btn-edit { background-color: rgba(67, 97, 238, 0.15); color: var(--primary-color); }
+        .btn-edit:hover { background-color: var(--primary-color); color: white; }
+
+        .btn-delete { background-color: rgba(255, 107, 107, 0.15); color: var(--danger-color); }
+        .btn-delete:hover { background-color: var(--danger-color); color: white; }
+
+        /* Mobile Toggle */
+        .mobile-nav-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px; }
+            .mobile-nav-btn { display: block; }
+            .toolbar-card { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-nav-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h4>FitPower Pro</h4>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="/admin/dashboard"><i class="fas fa-user"></i> My Profile</a>
+            <a href="/admin/users"><i class="fas fa-users"></i> Users</a>
+            <a href="/admin/specialisations" class="active"><i class="fas fa-list"></i> Specialisations</a>
+        </div>
+
+        <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <div class="welcome-banner">
+            <h1>Specialisations Management 📋</h1>
+            <p>Organize categories and trainer skills</p>
+        </div>
+
+        <div class="toolbar-card">
+            <h2>List of Specialisations</h2>
+            <button id="addSpecialisationBtn" class="btn btn-primary">
+                <i class="fas fa-plus mr-2"></i> Add New
+            </button>
+        </div>
+
+        <div class="table-card">
+            <table class="table" id="specialisationsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th style="text-align: center;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for spec in specialisations %}
+                    <tr data-id="{{ spec.id }}">
+                        <td>#{{ spec.id }}</td>
+                        <td style="font-weight: 500;">{{ spec.name }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-action btn-edit edit-btn" title="Edit">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button class="btn btn-action btn-delete delete-btn" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        $(document).ready(function () {
+
+            // Add specialisation
+            $("#addSpecialisationBtn").click(function () {
+                Swal.fire({
+                    title: 'Add Specialisation',
+                    input: 'text',
+                    inputLabel: 'Specialisation Name',
+                    inputPlaceholder: 'e.g. Yoga, CrossFit...',
+                    showCancelButton: true,
+                    confirmButtonText: 'Add',
+                    confirmButtonColor: '#4361ee',
+                    cancelButtonColor: '#d33',
+                    inputValidator: (value) => {
+                        if (!value) return 'Name is required!';
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post("/admin/specialisations/add", { name: result.value })
+                            .done(function (data) {
+                                if (data.status === "success") {
+                                    // Append row with new styles
+                                    $("#specialisationsTable tbody").append(`
+                                        <tr data-id="${data.id}">
+                                            <td>#${data.id}</td>
+                                            <td style="font-weight: 500;">${data.name}</td>
+                                            <td class="text-center">
+                                                <button class="btn btn-action btn-edit edit-btn" title="Edit">
+                                                    <i class="fas fa-pen"></i>
+                                                </button>
+                                                <button class="btn btn-action btn-delete delete-btn" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    `);
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Added!",
+                                        text: "Specialisation added successfully.",
+                                        confirmButtonColor: '#4361ee'
+                                    });
+                                } else {
+                                    Swal.fire("Error", data.message, "error");
+                                }
+                            }).fail(function () {
+                                Swal.fire("Error", "Connection error.", "error");
+                            });
+                    }
+                });
+            });
+
+            // Edit specialisation
+            $(document).on("click", ".edit-btn", function () {
+                const row = $(this).closest("tr");
+                const id = row.data("id");
+                const currentName = row.find("td:nth-child(2)").text().trim();
+
+                Swal.fire({
+                    title: 'Edit Specialisation',
+                    input: 'text',
+                    inputLabel: 'Name',
+                    inputValue: currentName,
+                    showCancelButton: true,
+                    confirmButtonText: 'Update',
+                    confirmButtonColor: '#4361ee',
+                    cancelButtonColor: '#d33',
+                    inputValidator: (value) => {
+                        if (!value) return 'Name is required!';
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post(`/admin/specialisations/edit/${id}`, { name: result.value })
+                            .done(function (data) {
+                                if (data.status === "success") {
+                                    row.find("td:nth-child(2)").text(data.name);
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Updated!",
+                                        text: "Specialisation updated successfully.",
+                                        confirmButtonColor: '#4361ee'
+                                    });
+                                } else {
+                                    Swal.fire("Error", data.message, "error");
+                                }
+                            }).fail(function () {
+                                Swal.fire("Error", "Connection error.", "error");
+                            });
+                    }
+                });
+            });
+
+            // Delete specialisation
+            $(document).on("click", ".delete-btn", function () {
+                const row = $(this).closest("tr");
+                const id = row.data("id");
+
+                Swal.fire({
+                    title: 'Delete this specialisation?',
+                    text: "This action cannot be undone.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#636e72',
+                    confirmButtonText: 'Yes, delete'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post(`/admin/specialisations/delete/${id}`)
+                            .done(function (data) {
+                                if (data.status === "success") {
+                                    row.css('background', '#ff6b6b');
+                                    row.fadeOut(400, function() { $(this).remove(); });
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Deleted!",
+                                        text: "Specialisation removed.",
+                                        confirmButtonColor: '#4361ee'
+                                    });
+                                } else {
+                                    Swal.fire("Error", data.message, "error");
+                                }
+                            }).fail(function () {
+                                Swal.fire("Error", "Connection error.", "error");
+                            });
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title>Perfil | FitPower Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/css/style.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/style.trainer.css">
+</head>
+
+<body data-show-modal="{{ show_modal }}">
+
+  <!-- Mobile toggle -->
+  <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+    <i class="fas fa-bars"></i>
+  </button>
+  <div class="sidebar-backdrop" id="backdrop" onclick="toggleSidebar()"></div>
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+      <div>
+        <div class="logo-text">FITPOWER</div>
+        <div class="logo-sub">PRO TRAINER</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">PRINCIPAL</div>
+
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-chart-line"></i></div>
+        Dashboard
+      </a>
+      <a class="nav-item active" href="#">
+        <div class="nav-icon"><i class="fas fa-user"></i></div>
+        My Profile
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-users"></i></div>
+        Custumers
+        <span class="nav-badge">84</span>
+      </a>
+
+      <div class="nav-section-label">WORK OUT</div>
+
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-dumbbell"></i></div>
+        Programs
+        <span class="nav-badge purple">6</span>
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-calendar-alt"></i></div>
+        Calendary
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+        Rutins
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-apple-alt"></i></div>
+        Nutrition
+      </a>
+
+      <div class="nav-section-label">COMUNICATION</div>
+
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-comments"></i></div>
+        Impruvements
+        <span class="nav-badge red">3</span>
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-bell"></i></div>
+        Notifications
+      </a>
+
+      <div class="nav-section-label">Buiness</div>
+
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-chart-pie"></i></div>
+        Estadistics
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-star"></i></div>
+        Reviews
+        <span class="nav-badge">4.9</span>
+      </a>
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-credit-card"></i></div>
+        Payments
+      </a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a class="nav-item" href="#">
+        <div class="nav-icon"><i class="fas fa-cog"></i></div>
+        Configuration
+      </a>
+      <a class="nav-item" href="/login" style="color:var(--accent2)" onclick="void(0)">
+        <div class="nav-icon" style="color:var(--accent2)"><i class="fas fa-sign-out-alt"></i></div>
+        Log  Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════════ MAIN ═══════════════ -->
+  <main class="main">
+
+    <div class="section-header">
+      <div>
+        <div class="section-title">MY PROFILE</div>
+        <div class="section-subtitle">PROFETIONAL AND PERSONAL INFORMATION</div>
+      </div>
+
+      <button onclick="openEditModal()" class="btn btn-primary">
+        EDIT PROFILE
+      </button>
+    </div>
+
+    <div class="profile-grid">
+
+      <!-- AVATAR CARD -->
+      <div class="card profile-card">
+
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar">
+            <img id="trainer-photo" src="/static/profile_photos/default.png"
+              style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+            <span id="trainer-initials"></span>
+          </div>
+          <div class="avatar-status"></div>
+          <div class="upload-overlay">
+            <i class="fas fa-camera" style="color:#fff;font-size:20px"></i>
+          </div>
+        </div>
+
+        <div class="profile-name" id="trainer-fullname"></div>
+        <div class="profile-role" id="trainer-role"></div>
+
+        <span class="badge badge-green" id="trainer-verified" style="padding:8px 20px;font-size:11px;display:none">
+          ✓ VERIFY PROFILE
+        </span>
+
+        <div class="profile-stats">
+
+          <div class="profile-stat">
+            <div class="profile-stat-val" id="trainer-clients" style="color:var(--accent)">0</div>
+            <div class="profile-stat-lbl">Costumers</div>
+          </div>
+
+          <div class="stat-divider"></div>
+
+          <div class="profile-stat">
+            <div class="profile-stat-val" id="trainer-programs" style="color:var(--accent4)">0</div>
+            <div class="profile-stat-lbl">Programs</div>
+          </div>
+
+          <div class="stat-divider"></div>
+
+          <div class="profile-stat">
+            <div class="profile-stat-val" id="trainer-rating" style="color:var(--accent3)">0</div>
+            <div class="profile-stat-lbl">Rating</div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- INFO CARD -->
+      <div class="card">
+
+        <div class="card-title">
+          <span class="accent-dot" style="background:var(--accent4)"></span>
+          PERSONAL DATA
+        </div>
+
+        <div class="grid-2">
+
+          <div class="form-group">
+            <div class="form-label">FULL NAME</div>
+            <div class="field-display" id="trainer-fullname-info"></div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">EMAIL</div>
+            <div class="field-display" id="trainer-email"></div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">CERTIFICATION</div>
+            <div class="field-display" id="trainer-certifications"></div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">YEARS EXPERIENCE</div>
+            <div class="field-display" id="trainer-experience"></div>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">BIOGRAFY</div>
+          <div class="field-display" id="trainer-bio" style="line-height:1.7;color:var(--text-muted)">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- CERTIFICATIONS + SPECIALTIES -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px">
+
+      <!-- CERTIFICACIONES -->
+      <div class="card">
+
+        <div class="card-title">
+          <span class="accent-dot" style="background:var(--accent)"></span>
+          CERTIFICATIONS
+        </div>
+
+        <div id="certifications-container"></div>
+
+      </div>
+
+
+      <!-- ESPECIALIDADES -->
+      <div class="card">
+
+        <div class="card-title">
+          <span class="accent-dot" style="background:var(--accent3)"></span>
+          ESPECIALITYS
+        </div>
+
+        <div id="specialties-container"></div>
+
+      </div>
+
+    </div>
+
+  </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        const res = await fetch("/trainer/profile/data");
+        const data = await res.json();
+        const trainer = data.trainer;
+        document.getElementById("trainer-fullname").innerText = trainer.full_name || "";
+        document.getElementById("trainer-fullname-info").innerText = trainer.full_name || "";
+        document.getElementById("trainer-email").innerText = trainer.email || "";
+        document.getElementById("trainer-role").innerText = trainer.role || "";
+        const photo = document.getElementById("trainer-photo");
+        const initials = document.getElementById("trainer-initials");
+        if (trainer.profile_photo) {
+          photo.src = "/static/profile_photos/" + trainer.profile_photo;
+          photo.style.display = "block";
+          initials.style.display = "none";
+        } else {
+          photo.style.display = "none";
+          initials.innerText = trainer.initials || "";
+        }
+        document.getElementById("trainer-certifications").innerText = trainer.certifications || "";
+        document.getElementById("trainer-experience").innerText = trainer.experience_years
+          ? trainer.experience_years + " años"
+          : "0 años";
+        document.getElementById("trainer-bio").innerText = trainer.bio || "";
+        document.getElementById("trainer-clients").innerText = trainer.clients_count || 0;
+        document.getElementById("trainer-programs").innerText = trainer.programs_count || 0;
+        document.getElementById("trainer-rating").innerText = trainer.rating || 0;
+        const certContainer = document.getElementById("certifications-container");
+        certContainer.innerHTML = "";
+        if (trainer.certifications) {
+          const el = document.createElement("div");
+          el.className = "cert-badge";
+          el.innerHTML = `
+            <div class="cert-icon">
+              <i class="fas fa-medal"></i>
+            </div>
+            ${trainer.certifications}
+          `;
+          certContainer.appendChild(el);
+        } else {
+          certContainer.innerHTML = "<span style='opacity:.6'>Sin certificaciones registradas</span>";
+        }
+        const specialtiesContainer = document.getElementById("specialties-container");
+        specialtiesContainer.innerHTML = "";
+        if (data.specialties && data.specialties.length > 0) {
+          data.specialties.forEach(s => {
+            const el = document.createElement("div");
+            el.className = "cert-badge";
+            el.innerHTML = `
+              <div class="cert-icon">
+                <i class="fas fa-fire"></i>
+              </div>
+              ${s.name}
+            `;
+            specialtiesContainer.appendChild(el);
+          });
+        } else {
+          specialtiesContainer.innerHTML = "<span style='opacity:.6'>Sin especialidades registradas</span>";
+        }
+      } catch (err) {
+        console.error("Error cargando perfil:", err);
+      }
+    });
+  </script>
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <span style="font-size:22px">🎉</span>
+    <span style="font-size:13px;font-weight:500">Perfil actualizado exitosamente</span>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+  {% if show_modal %}
+  <div id="completeProfileModal" class="modal">
+    <div class="modal-content" id="modalContent">
+      <!-- Barra superior para mover -->
+      <div class="modal-header" id="modalHeader">
+        <h2 style="margin:0; font-size:18px;">Complete your Profile</h2>
+      </div>
+
+      <form id="completeProfileForm" action="/trainer/complete-profile" method="POST" enctype="multipart/form-data">
+        <h3>Personal Data</h3>
+        <label>Ege</label>
+        <input type="number" name="age" required placeholder="Años">
+
+        <label>Weight</label>
+        <input type="number" step="0.1" name="weight" id="weight_lbs" required placeholder="Libras">
+        <small id="weight_kg_text">0 kg</small>
+
+        <label>Height</label>
+        <input type="number" step="0.01" name="height" id="height_m" required placeholder="Metros">
+        <small id="height_ft_text">0 ft</small>
+
+        <label>Gender</label>
+        <select name="gender" required>
+          <option value="male">Male</option>
+          <option value="female">Femail</option>
+          <option value="other">Other</option>
+        </select>
+
+        <h3>Contact</h3>
+        <label>Phone Number</label>
+        <input type="text" name="phone" required placeholder="Tu teléfono">
+
+        <label>Addres</label>
+        <input type="text" name="location" required placeholder="Ciudad, País">
+
+        <h3>Especialitys</h3>
+
+        <input type="text" id="specialty-input" placeholder="Escribe una especialidad y presiona Enter">
+
+        <!-- Especialidades que ya existen -->
+        <div id="specialty-suggestions">
+
+          {% for spec in specialties %}
+          <button type="button" class="specialty-option">{{ spec.name }}</button>
+          {% endfor %}
+
+        </div>
+
+        <!-- Tags seleccionados -->
+        <div id="specialty-tags"></div>
+
+        <input type="hidden" name="specialties" id="specialties-hidden">
+
+        <h3>Foto de perfil</h3>
+
+        <input type="file" name="photo" id="photo-input" accept="image/*">
+
+        <div style="margin-top:10px;">
+          <img id="photo-preview" src="/static/img/default-avatar.png"
+            style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid #ddd;">
+        </div>
+
+        <button type="submit"
+          style="margin-top:20px; width:100%; padding:10px; background:#4CAF50; color:white; border:none; border-radius:5px; font-size:16px;">
+          Guardar Perfil
+        </button>
+
+      </form>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const photoInput = document.getElementById("photo-input");
+      const photoPreview = document.getElementById("photo-preview");
+      if (photoInput) {
+        photoInput.addEventListener("change", () => {
+          const file = photoInput.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              photoPreview.src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+      const specialtyInput = document.getElementById("specialty-input");
+      const tagsContainer = document.getElementById("specialty-tags");
+      const hiddenInput = document.getElementById("specialties-hidden");
+      const suggestionButtons = document.querySelectorAll(".specialty-option");
+      let specialties = [];
+      function updateHidden() {
+        hiddenInput.value = specialties.join(",");
+      }
+      function createTag(value) {
+        const tag = document.createElement("div");
+        tag.className = "specialty-tag";
+        tag.innerHTML = `
+        ${value}
+        <span>×</span>
+      `;
+        tag.querySelector("span").onclick = () => {
+          specialties = specialties.filter(s => s !== value);
+          tag.remove();
+          updateHidden();
+        };
+        tagsContainer.appendChild(tag);
+      }
+      function addSpecialty(value) {
+        value = value.trim();
+        if (!value) return;
+        if (specialties.includes(value)) return;
+        specialties.push(value);
+        createTag(value);
+        updateHidden();
+      }
+      if (specialtyInput) {
+        specialtyInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addSpecialty(specialtyInput.value);
+            specialtyInput.value = "";
+          }
+        });
+      }
+      suggestionButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          addSpecialty(btn.innerText);
+        });
+      });
+      const weightInput = document.getElementById("weight_lbs");
+      const weightKgText = document.getElementById("weight_kg_text");
+      if (weightInput) {
+        weightInput.addEventListener("input", () => {
+          const lbs = parseFloat(weightInput.value) || 0;
+          const kg = (lbs * 0.453592).toFixed(1);
+          weightKgText.innerText = kg + " kg";
+        });
+      }
+      const heightInput = document.getElementById("height_m");
+      const heightFtText = document.getElementById("height_ft_text");
+      if (heightInput) {
+        heightInput.addEventListener("input", () => {
+          const m = parseFloat(heightInput.value) || 0;
+          const ft = (m * 3.28084).toFixed(2);
+          heightFtText.innerText = ft + " ft";
+        });
+      }
+      const modalContent = document.getElementById("modalContent");
+      const modalHeader = document.getElementById("modalHeader");
+      if (modalContent && modalHeader) {
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        modalHeader.onmousedown = dragMouseDown;
+        function dragMouseDown(e) {
+          e.preventDefault();
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          document.onmouseup = closeDrag;
+          document.onmousemove = elementDrag;
+        }
+        function elementDrag(e) {
+          e.preventDefault();
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          modalContent.style.top = (modalContent.offsetTop - pos2) + "px";
+          modalContent.style.left = (modalContent.offsetLeft - pos1) + "px";
+        }
+        function closeDrag() {
+          document.onmouseup = null;
+          document.onmousemove = null;
+        }
+      }
+      const form = document.getElementById("completeProfileForm");
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          Swal.fire({
+            icon: "success",
+            title: "Profile Completed",
+            text: "Saving Data...",
+            confirmButtonText: "Continiu"
+          }).then(() => {
+
+            form.submit();
+          });
+        });
+      }
+    });
+  </script>
+  {% endif %}
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const showModal = ['True', 'true', '1'].includes(document.body.dataset.showModal);
+      const urlParams = new URLSearchParams(window.location.search);
+      const success = urlParams.get("success");
+      if (success === "login") {
+        Swal.fire({
+          icon: "success",
+          title: "Seccessful Login 🎉",
+          text: "Wellcome",
+          timer: 2000,
+          showConfirmButton: false,
+          didClose: () => {
+            window.history.replaceState({}, document.title, "/trainer/profile");
+          }
+        });
+      }
+      if (showModal) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Profile Incomplited ⚠️',
+          text: 'You must complete your profile',
+          confirmButtonText: 'OK',
+          allowOutsideClick: false,
+          allowEscapeKey: false
+        }).then(() => {
+          const modal = document.getElementById('completeProfileModal');
+          if (modal) modal.style.display = 'flex';
+          document.body.classList.add('modal-open');
+        });
+      }
+    });
+  </script>
+   <div class="modal-overlay" id="modal-edit">
+
+    <div class="modal">
+      <div class="modal-title">
+        <i class="fas fa-user-edit" style="color:var(--accent);font-size:20px"></i>
+        EDITAR PERFIL
+        <button class="modal-close" onclick="closeModal('modal-edit')">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form id="editProfileForm">
+
+        <div class="form-row">
+
+          <div class="form-group">
+            <label class="form-label">WEIGTH (lbs)</label>
+            <input type="number" id="edit-weight" name="weight_lbs" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">HIGTH (m)</label>
+            <input type="number" step="0.01" id="edit-height" name="height_m" class="form-control">
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">PHONE NUMBER</label>
+          <input type="text" id="edit-phone" name="phone" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">DIRECTION</label>
+          <input type="text" id="edit-address" name="address" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">BIOGRAFY</label>
+          <textarea id="edit-bio" name="bio" class="form-control"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-edit')">
+            Cancel
+          </button>
+
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    async function openEditModal() {
+      try {
+
+        const res = await fetch("/trainer/profile/data");
+        const data = await res.json();
+        const t = data.trainer;
+
+        document.getElementById("edit-weight").value = t.weight_lbs || "";
+        document.getElementById("edit-height").value = t.height_m || "";
+        document.getElementById("edit-phone").value = t.phone || "";
+        document.getElementById("edit-address").value = t.address || "";
+        document.getElementById("edit-bio").value = t.bio || "";
+        document.getElementById("modal-edit").addEventListener("click", function (e) {
+          if (e.target === this) {
+            this.classList.remove("open");
+          }
+        });
+
+        const modal = document.getElementById("modal-edit");
+        modal.classList.add("open");
+
+      } catch (err) {
+        console.error("Error loading data:", err);
+      }
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("editProfileForm");
+      if (form) {
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const formData = new FormData(this);
+          try {
+            const res = await fetch("/trainer/update-profile", {
+              method: "POST",
+              body: formData
+            });
+            if (res.ok) {
+              Swal.fire({
+                icon: "success",
+                title: "Profile Updated",
+                timer: 1500,
+                showConfirmButton: false
+              }).then(() => {
+                location.reload();
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "It cant update"
+              });
+            }
+          } catch (err) {
+            Swal.fire({
+              icon: "error",
+              title: "Conexion Error"
+            });
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
