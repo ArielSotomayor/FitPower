@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aerobics Training | FitPower </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+
+    <style>
+        :root {
+            --primary-red: #DC143C;       /* Rojo Intenso */
+            --dark-red: #b91c1c;
+            --dark-black: #0f0f0f;        /* Negro Profundo */
+            --soft-black: #1a1a1a;
+            --bg-body: #f4f5f7;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR (CLIENT STYLE) --- */
+        .sidebar {
+            width: 260px;
+            background-color: var(--dark-black);
+            color: #fff;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .sidebar-header h4 {
+            margin: 0;
+            color: white;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-header span {
+            color: var(--primary-red);
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .sidebar a {
+            color: rgba(255,255,255,0.7);
+            padding: 14px 25px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255,255,255,0.05);
+            color: #fff;
+            border-left-color: rgba(255,255,255,0.3);
+        }
+
+        .sidebar a.active {
+            background-color: rgba(220, 20, 60, 0.15);
+            color: var(--primary-red);
+            font-weight: 600;
+            border-left-color: var(--primary-red);
+        }
+
+        .sidebar .logout-btn {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6) !important;
+        }
+        .sidebar .logout-btn:hover {
+            color: white !important;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            margin-left: 260px;
+            flex-grow: 1;
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-body);
+        }
+
+        /* Top Header */
+        .top-header {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .top-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-black);
+            margin: 0;
+        }
+
+        .content-wrapper {
+            padding: 40px;
+        }
+
+        /* --- HERO BANNER --- */
+        .hero-section {
+            background: var(--dark-black);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 60%;
+        }
+
+        .hero-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-section h2 span {
+            color: var(--primary-red);
+        }
+
+        .hero-section p {
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
+
+        .hero-btn {
+            background: var(--primary-red);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+
+        .hero-btn:hover {
+            background: white;
+            color: var(--dark-black);
+            text-decoration: none;
+        }
+
+        .hero-img-placeholder {
+            position: relative;
+            z-index: 2;
+            font-size: 6rem;
+            color: rgba(255,255,255,0.1);
+        }
+
+        .hero-bg-accent {
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 250px;
+            height: 250px;
+            background: var(--primary-red);
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        /* --- SECTION TITLE --- */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .section-title h3 {
+            font-weight: 700;
+            color: var(--dark-black);
+            font-size: 1.25rem;
+            margin: 0;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .filter-btn.active {
+            background: var(--dark-black);
+            color: white;
+            border-color: var(--dark-black);
+        }
+
+        /* --- EXERCISE GRID --- */
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: var(--soft-black); /* Fallback color */
+        }
+
+        .card-difficulty {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            backdrop-filter: blur(5px);
+        }
+        
+        .card-difficulty.easy { background: rgba(16, 185, 129, 0.9); }
+        .card-difficulty.medium { background: rgba(245, 158, 11, 0.9); }
+        .card-difficulty.hard { background: var(--primary-red); }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--dark-black);
+        }
+
+        .card-stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-item i {
+            margin-right: 5px;
+            color: var(--primary-red);
+        }
+
+        .btn-start {
+            width: 100%;
+            background: var(--dark-black);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-start:hover {
+            background: var(--primary-red);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar { transform: translateX(-100%); position: fixed; }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+            .mobile-nav-btn { display: block !important; }
+            .hero-content { max-width: 100%; text-align: center; }
+            .hero-img-placeholder { display: none; }
+        }
+
+        .mobile-nav-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            background: var(--dark-black);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-nav-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h4>Fit<span>Power</span></h4>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="/client/dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="/client/profile"><i class="fas fa-user"></i> My Profile</a>
+            <a href="/client/workouts" class="active"><i class="fas fa-dumbbell"></i> Workouts</a>
+            <a href="/client/nutrition"><i class="fas fa-apple-alt"></i> Nutrition</a>
+            <a href="/contact"><i class="fas fa-headset"></i> Support</a>
+        </div>
+
+        <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        <div class="top-header">
+            <h1>Aerobics Training</h1>
+            <div class="user-info">
+                <img src="/static/img/user.png" class="rounded-circle mr-2" width="35" alt="User">
+                <span class="font-weight-bold d-none d-sm-inline">Welcome, User</span>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            
+            <!-- Hero Banner -->
+            <div class="hero-section">
+                <div class="hero-content">
+                    <h2>Boost Your <span>Cardio</span></h2>
+                    <p>Improve your endurance and burn calories with our specialized aerobic routines.</p>
+                    <a href="#" class="hero-btn"><i class="fas fa-play mr-2"></i> Start Daily Routine</a>
+                </div>
+                <div class="hero-img-placeholder">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <div class="hero-bg-accent"></div>
+            </div>
+
+            <!-- Filter Toolbar -->
+            <div class="section-title">
+                <h3>Exercises List</h3>
+                <div>
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Beginner</button>
+                    <button class="filter-btn">Advanced</button>
+                </div>
+            </div>
+
+            <!-- Exercise Grid -->
+            <div class="exercise-grid">
+                
+                <!-- Exercise 1 -->
+                <div class="exercise-card">
+                    <!-- Placeholder image URL -->
+                    <img src="https://placehold.co/600x400/1a1a1a/DC143C?text=Jumping+Jacks" class="card-img-top" alt="Jumping Jacks">
+                    <span class="card-difficulty easy">Easy</span>
+                    <div class="card-body">
+                        <h5 class="card-title">Jumping Jacks</h5>
+                        <div class="card-stats">
+                            <div class="stat-item"><i class="fas fa-clock"></i> 10 mins</div>
+                            <div class="stat-item"><i class="fas fa-fire"></i> 80 kcal</div>
+                        </div>
+                        <button class="btn btn-start">Start Exercise</button>
+                    </div>
+                </div>
+
+                <!-- Exercise 2 -->
+                <div class="exercise-card">
+                    <img src="https://placehold.co/600x400/1a1a1a/DC143C?text=High+Knees" class="card-img-top" alt="High Knees">
+                    <span class="card-difficulty medium">Medium</span>
+                    <div class="card-body">
+                        <h5 class="card-title">High Knees</h5>
+                        <div class="card-stats">
+                            <div class="stat-item"><i class="fas fa-clock"></i> 15 mins</div>
+                            <div class="stat-item"><i class="fas fa-fire"></i> 120 kcal</div>
+                        </div>
+                        <button class="btn btn-start">Start Exercise</button>
+                    </div>
+                </div>
+
+                <!-- Exercise 3 -->
+                <div class="exercise-card">
+                    <img src="https://placehold.co/600x400/1a1a1a/DC143C?text=Burpees" class="card-img-top" alt="Burpees">
+                    <span class="card-difficulty hard">Hard</span>
+                    <div class="card-body">
+                        <h5 class="card-title">Burpees</h5>
+                        <div class="card-stats">
+                            <div class="stat-item"><i class="fas fa-clock"></i> 10 mins</div>
+                            <div class="stat-item"><i class="fas fa-fire"></i> 150 kcal</div>
+                        </div>
+                        <button class="btn btn-start">Start Exercise</button>
+                    </div>
+                </div>
+
+                <!-- Exercise 4 -->
+                <div class="exercise-card">
+                    <img src="https://placehold.co/600x400/1a1a1a/DC143C?text=Jump+Rope" class="card-img-top" alt="Jump Rope">
+                    <span class="card-difficulty medium">Medium</span>
+                    <div class="card-body">
+                        <h5 class="card-title">Jump Rope</h5>
+                        <div class="card-stats">
+                            <div class="stat-item"><i class="fas fa-clock"></i> 20 mins</div>
+                            <div class="stat-item"><i class="fas fa-fire"></i> 200 kcal</div>
+                        </div>
+                        <button class="btn btn-start">Start Exercise</button>
+                    </div>
+                </div>
+
+                <!-- Exercise 5 -->
+                <div class="exercise-card">
+                    <img src="https://placehold.co/600x400/1a1a1a/DC143C?text=Boxing+Punches" class="card-img-top" alt="Boxing Punches">
+                    <span class="card-difficulty easy">Easy</span>
+                    <div class="card-body">
+                        <h5 class="card-title">Boxing Punches (Shadow)</h5>
+                        <div class="card-stats">
+                            <div class="stat-item"><i class="fas fa-clock"></i> 15 mins</div>
+                            <div class="stat-item"><i class="fas fa-fire"></i> 100 kcal</div>
+                        </div>
+                        <button class="btn btn-start">Start Exercise</button>
+                    </div>
+                </div>
+
+                <!-- Exercise 6 -->
+                <div class="exercise-card">
+                    <img src="https://placehold.co/600x400/1a1a1a/DC143C?text=Squat+Jumps" class="card-img-top" alt="Squat Jumps">
+                    <span class="card-difficulty hard">Hard</span>
+                    <div class="card-body">
+                        <h5 class="card-title">Squat Jumps</h5>
+                        <div class="card-stats">
+                            <div class="stat-item"><i class="fas fa-clock"></i> 12 mins</div>
+                            <div class="stat-item"><i class="fas fa-fire"></i> 140 kcal</div>
+                        </div>
+                        <button class="btn btn-start">Start Exercise</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

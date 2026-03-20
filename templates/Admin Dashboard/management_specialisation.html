@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Specialisations Management | FitPower Pro</title>
+    <title>Specialisations | FitPower </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -18,20 +18,20 @@
 
     <style>
         :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --accent-color: #4cc9f0;
-            --sidebar-bg: #0b0e14;
+            --primary-blue: #0056b3;       /* Azul Profundo Corporativo */
+            --accent-blue: #3b82f6;        /* Azul Vivo */
+            --dark-black: #000000;
+            --soft-black: #111318;         /* Negro Suave para Sidebar */
+            --bg-body: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #2d3436;
-            --text-muted: #636e72;
-            --bg-body: #f4f6f9;
-            --success-color: #2ed573;
-            --danger-color: #ff6b6b;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --danger-color: #ef4444;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
             display: flex;
@@ -39,38 +39,49 @@
             overflow-x: hidden;
         }
 
-        /* --- Sidebar Redesign --- */
+        /* --- SIDEBAR --- */
         .sidebar {
             width: 260px;
-            background-color: var(--sidebar-bg);
+            background-color: var(--soft-black);
             color: #fff;
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
             z-index: 1000;
-            transition: all 0.3s ease;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.1);
         }
 
         .sidebar-header {
-            padding: 25px 20px;
+            padding: 30px 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             text-align: center;
         }
 
         .sidebar-header h4 {
             font-weight: 700;
-            letter-spacing: 0.5px;
             margin: 0;
-            background: linear-gradient(to right, var(--accent-color), #fff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar-header span {
+            color: var(--accent-blue);
         }
 
         .sidebar-menu {
             padding: 20px 0;
             flex-grow: 1;
+        }
+
+        .sidebar-menu-title {
+            padding: 15px 25px 10px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 1.2px;
+            font-weight: 600;
         }
 
         .sidebar a {
@@ -79,7 +90,7 @@
             display: flex;
             align-items: center;
             text-decoration: none;
-            transition: 0.3s;
+            transition: all 0.2s;
             font-weight: 400;
             font-size: 0.95rem;
             border-left: 4px solid transparent;
@@ -87,7 +98,6 @@
 
         .sidebar a i {
             margin-right: 15px;
-            font-size: 1.1rem;
             width: 20px;
             text-align: center;
         }
@@ -95,14 +105,14 @@
         .sidebar a:hover {
             background-color: rgba(255,255,255,0.05);
             color: #fff;
-            border-left-color: var(--accent-color);
+            border-left-color: rgba(255,255,255,0.3);
         }
 
         .sidebar a.active {
-            background-color: rgba(67, 97, 238, 0.15);
-            color: #fff;
-            font-weight: 500;
-            border-left-color: var(--primary-color);
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            font-weight: 600;
+            border-left-color: var(--accent-blue);
         }
 
         .sidebar .logout-btn {
@@ -113,101 +123,131 @@
         .sidebar .logout-btn:hover {
             background-color: rgba(255, 107, 107, 0.1);
             color: #ff6b6b !important;
+            border-left-color: #ff6b6b;
         }
 
-        /* --- Main Content --- */
+        /* --- MAIN CONTENT --- */
         .main-content {
             margin-left: 260px;
             flex-grow: 1;
-            padding: 30px 40px;
             width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-body);
             transition: margin-left 0.3s ease;
         }
 
-        .welcome-banner {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .welcome-banner::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-        }
-
-        .welcome-banner h1 {
-            font-weight: 600;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
-
-        .welcome-banner p {
-            opacity: 0.9;
-            font-weight: 300;
-            margin: 0;
-        }
-
-        /* --- Toolbar --- */
-        .toolbar-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        /* Top Header */
+        .top-header {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
-        .toolbar-card h2 {
-            font-size: 1.5rem;
+        .top-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark-black);
+            margin: 0;
+        }
+
+        .content-wrapper {
+            padding: 40px;
+        }
+
+        /* --- PAGE HEADER --- */
+        .page-header {
+            background: var(--dark-black);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .page-header::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background: var(--primary-blue);
+            clip-path: polygon(40% 0, 100% 0, 100% 100%, 0% 100%);
+            opacity: 1;
+        }
+
+        .page-header h2 {
+            font-weight: 700;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header p {
+            opacity: 0.7;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- TOOLBAR --- */
+        .toolbar-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .toolbar-card h3 {
+            font-size: 1.1rem;
             font-weight: 600;
             margin: 0;
             color: var(--text-main);
         }
 
-        /* --- Buttons --- */
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            padding: 10px 25px;
+        /* --- BUTTONS --- */
+        .btn-primary-custom {
+            background-color: var(--primary-blue);
+            border: none;
+            color: white;
+            padding: 10px 20px;
             border-radius: 8px;
-            font-weight: 500;
-            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.2);
-        }
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(67, 97, 238, 0.3);
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
         }
 
-        /* --- Table Card --- */
+        .btn-primary-custom:hover {
+            background-color: var(--dark-black);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* --- TABLE CARD --- */
         .table-card {
             background: var(--card-bg);
-            border-radius: 15px;
-            padding: 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
             overflow: hidden;
+            border: 1px solid var(--border-color);
         }
 
         .table { margin-bottom: 0; }
         
         .table thead th {
-            background-color: #f8f9fa;
-            border-bottom: 2px solid #e9ecef;
+            background-color: #f1f5f9;
+            border-bottom: 1px solid var(--border-color);
             color: var(--text-muted);
             font-weight: 600;
             text-transform: uppercase;
@@ -217,36 +257,50 @@
         }
 
         .table tbody tr { transition: 0.2s; }
-        .table tbody tr:hover { background-color: rgba(67, 97, 238, 0.03); }
+        .table tbody tr:hover { background-color: rgba(59, 130, 246, 0.03); }
 
         .table td {
-            padding: 15px 20px;
+            padding: 18px 20px;
             vertical-align: middle;
             font-size: 0.95rem;
             color: var(--text-main);
-            border-top: 1px solid #f1f1f1;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        /* ID BADGE */
+        .id-badge {
+            background-color: #f1f5f9;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         /* Action Buttons */
+        .actions-cell {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
         .btn-action {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 8px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0;
             border: none;
             transition: 0.2s;
-            margin-right: 5px;
             cursor: pointer;
         }
-        .btn-action i { font-size: 0.9rem; }
+        .btn-action i { font-size: 0.85rem; }
         
-        .btn-edit { background-color: rgba(67, 97, 238, 0.15); color: var(--primary-color); }
-        .btn-edit:hover { background-color: var(--primary-color); color: white; }
+        .btn-edit { background-color: rgba(0, 86, 179, 0.1); color: var(--primary-blue); }
+        .btn-edit:hover { background-color: var(--primary-blue); color: white; }
 
-        .btn-delete { background-color: rgba(255, 107, 107, 0.15); color: var(--danger-color); }
+        .btn-delete { background-color: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
         .btn-delete:hover { background-color: var(--danger-color); color: white; }
 
         /* Mobile Toggle */
@@ -256,23 +310,23 @@
             top: 20px;
             left: 20px;
             z-index: 1100;
-            background: var(--primary-color);
+            background: var(--dark-black);
             color: white;
             border: none;
             border-radius: 8px;
             padding: 10px 15px;
             font-size: 1.2rem;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.active { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 20px; }
+            .main-content { margin-left: 0; }
             .mobile-nav-btn { display: block; }
-            .toolbar-card { flex-direction: column; align-items: flex-start; }
+            .content-wrapper { padding: 20px; }
+            .toolbar-card { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
     </style>
 </head>
@@ -287,59 +341,84 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h4>FitPower Pro</h4>
+            <h4>Fit<span>Power</span> Admin</h4>
         </div>
         
         <div class="sidebar-menu">
-            <a href="/admin/dashboard"><i class="fas fa-user"></i> My Profile</a>
+            <div class="sidebar-menu-title">Main</div>
+            <a href="/admin/dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
             <a href="/admin/users"><i class="fas fa-users"></i> Users</a>
-            <a href="/admin/specialisations" class="active"><i class="fas fa-list"></i> Specialisations</a>
+            <a href="/admin/specialisations" class="active"><i class="fas fa-tags"></i> Specialisations</a>
         </div>
 
-        <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+        <a href="/login" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Log Out</a>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
         
-        <div class="welcome-banner">
-            <h1>Specialisations Management 📋</h1>
-            <p>Organize categories and trainer skills</p>
+        <div class="top-header">
+            <h1>Specialisations Management</h1>
+            <div class="dropdown user-dropdown">
+                <button class="btn d-flex align-items-center" type="button" data-toggle="dropdown">
+                    <img src="/static/img/user.png" class="mr-2" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--border-color);" alt="User">
+                    <span class="d-none d-sm-inline font-weight-500">Admin</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="/admin/dashboard"><i class="fas fa-user mr-2 text-muted"></i> Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="/login"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
+                </div>
+            </div>
         </div>
 
-        <div class="toolbar-card">
-            <h2>List of Specialisations</h2>
-            <button id="addSpecialisationBtn" class="btn btn-primary">
-                <i class="fas fa-plus mr-2"></i> Add New
-            </button>
-        </div>
+        <div class="content-wrapper">
+            
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2>Manage Categories</h2>
+                <p>Create, edit, or remove specialisations for the platform.</p>
+            </div>
 
-        <div class="table-card">
-            <table class="table" id="specialisationsTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th style="text-align: center;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for spec in specialisations %}
-                    <tr data-id="{{ spec.id }}">
-                        <td>#{{ spec.id }}</td>
-                        <td style="font-weight: 500;">{{ spec.name }}</td>
-                        <td class="text-center">
-                            <button class="btn btn-action btn-edit edit-btn" title="Edit">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                            <button class="btn btn-action btn-delete delete-btn" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <!-- Toolbar -->
+            <div class="toolbar-card">
+                <h3><i class="fas fa-list-ul mr-2 text-muted"></i> Active List</h3>
+                <button id="addSpecialisationBtn" class="btn btn-primary-custom">
+                    <i class="fas fa-plus mr-2"></i> Add New
+                </button>
+            </div>
+
+            <!-- Table -->
+            <div class="table-card">
+                <table class="table" id="specialisationsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">ID</th>
+                            <th>Specialisation Name</th>
+                            <th style="width: 15%; text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for spec in specialisations %}
+                        <tr data-id="{{ spec.id }}">
+                            <td><span class="id-badge">#{{ spec.id }}</span></td>
+                            <td style="font-weight: 500;">{{ spec.name }}</td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="btn btn-action btn-edit edit-btn" title="Edit">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                    <button class="btn btn-action btn-delete delete-btn" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 
@@ -358,13 +437,13 @@
             // Add specialisation
             $("#addSpecialisationBtn").click(function () {
                 Swal.fire({
-                    title: 'Add Specialisation',
+                    title: 'Add New Specialisation',
                     input: 'text',
-                    inputLabel: 'Specialisation Name',
+                    inputLabel: 'Category Name',
                     inputPlaceholder: 'e.g. Yoga, CrossFit...',
                     showCancelButton: true,
                     confirmButtonText: 'Add',
-                    confirmButtonColor: '#4361ee',
+                    confirmButtonColor: '#0056b3',
                     cancelButtonColor: '#d33',
                     inputValidator: (value) => {
                         if (!value) return 'Name is required!';
@@ -374,26 +453,27 @@
                         $.post("/admin/specialisations/add", { name: result.value })
                             .done(function (data) {
                                 if (data.status === "success") {
-                                    // Append row with new styles
                                     $("#specialisationsTable tbody").append(`
                                         <tr data-id="${data.id}">
-                                            <td>#${data.id}</td>
+                                            <td><span class="id-badge">#${data.id}</span></td>
                                             <td style="font-weight: 500;">${data.name}</td>
-                                            <td class="text-center">
-                                                <button class="btn btn-action btn-edit edit-btn" title="Edit">
-                                                    <i class="fas fa-pen"></i>
-                                                </button>
-                                                <button class="btn btn-action btn-delete delete-btn" title="Delete">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                            <td>
+                                                <div class="actions-cell">
+                                                    <button class="btn btn-action btn-edit edit-btn" title="Edit">
+                                                        <i class="fas fa-pen"></i>
+                                                    </button>
+                                                    <button class="btn btn-action btn-delete delete-btn" title="Delete">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     `);
                                     Swal.fire({
                                         icon: "success",
                                         title: "Added!",
-                                        text: "Specialisation added successfully.",
-                                        confirmButtonColor: '#4361ee'
+                                        text: "Specialisation created.",
+                                        confirmButtonColor: '#0056b3'
                                     });
                                 } else {
                                     Swal.fire("Error", data.message, "error");
@@ -412,17 +492,13 @@
                 const currentName = row.find("td:nth-child(2)").text().trim();
 
                 Swal.fire({
-                    title: 'Edit Specialisation',
+                    title: 'Edit Name',
                     input: 'text',
-                    inputLabel: 'Name',
                     inputValue: currentName,
                     showCancelButton: true,
                     confirmButtonText: 'Update',
-                    confirmButtonColor: '#4361ee',
+                    confirmButtonColor: '#0056b3',
                     cancelButtonColor: '#d33',
-                    inputValidator: (value) => {
-                        if (!value) return 'Name is required!';
-                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.post(`/admin/specialisations/edit/${id}`, { name: result.value })
@@ -432,8 +508,7 @@
                                     Swal.fire({
                                         icon: "success",
                                         title: "Updated!",
-                                        text: "Specialisation updated successfully.",
-                                        confirmButtonColor: '#4361ee'
+                                        confirmButtonColor: '#0056b3'
                                     });
                                 } else {
                                     Swal.fire("Error", data.message, "error");
@@ -451,25 +526,24 @@
                 const id = row.data("id");
 
                 Swal.fire({
-                    title: 'Delete this specialisation?',
-                    text: "This action cannot be undone.",
+                    title: 'Delete item?',
+                    text: "This cannot be undone.",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#636e72',
-                    confirmButtonText: 'Yes, delete'
+                    confirmButtonText: 'Delete'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.post(`/admin/specialisations/delete/${id}`)
                             .done(function (data) {
                                 if (data.status === "success") {
-                                    row.css('background', '#ff6b6b');
+                                    row.css('background', '#fff0f0');
                                     row.fadeOut(400, function() { $(this).remove(); });
                                     Swal.fire({
                                         icon: "success",
-                                        title: "Deleted!",
-                                        text: "Specialisation removed.",
-                                        confirmButtonColor: '#4361ee'
+                                        title: "Deleted",
+                                        confirmButtonColor: '#0056b3'
                                     });
                                 } else {
                                     Swal.fire("Error", data.message, "error");
@@ -484,10 +558,6 @@
         });
     </script>
 
-    <script src="/static/lib/easing/easing.min.js"></script>
-    <script src="/static/lib/waypoints/waypoints.min.js"></script>
-    <script src="/static/mail/jqBootstrapValidation.min.js"></script>
-    <script src="/static/mail/contact.js"></script>
 </body>
 
 </html>

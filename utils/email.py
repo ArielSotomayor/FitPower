@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 def send_verification_email(to_email: str, code: str):
 
     sender_email = "fitpowerpro48@gmail.com"
-    sender_password = "ucjr rbuh zarx cimc"  # ⚠ no dejes esto expuesto
+    sender_password = "pbhwxskgsubxjpvv"  # ⚠ no dejes esto expuesto
 
     message = MIMEMultipart("alternative")
     message["Subject"] = "Código de verificación - FitPower Pro"
@@ -30,4 +30,3 @@ def send_verification_email(to_email: str, code: str):
         server.login(sender_email, sender_password)
         server.sendmail(sender_email, to_email, message.as_string())
 
-        

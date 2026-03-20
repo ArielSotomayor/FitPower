@@ -24,8 +24,20 @@ from models.trainer import TrainerProfile
 from models.trainer import TrainerSpecialty
 from fastapi import UploadFile, File, Form
 import shutil
+from models.user import User
+from database import get_db
 from models.trainer import TrainerProfileSpecialty
 app = FastAPI()
+import random
+import smtplib
+from email.mime.text import MIMEText
+from fastapi import Request, Form
+from fastapi.responses import HTMLResponse
+from fastapi.responses import JSONResponse
+from fastapi import Form
+import random
+import smtplib
+from email.mime.text import MIMEText
 
 from fastapi.staticfiles import StaticFiles
 
@@ -660,6 +672,50 @@ def resend_code(email: str = Form(...), db: Session = Depends(get_db)):
 
     return {"status": "success"}
 
+templates = Jinja2Templates(directory="templates")
+
+@app.get("/aerobics", response_class=HTMLResponse)
+def aerobics(request: Request):
+    return templates.TemplateResponse(
+        "Client Dashboard/aerobics.html",
+        {"request": request}
+    )
+    
+    
+import random
+
+def generar_codigo():
+    return str(random.randint(100000, 999999))
 
 
+def enviar_codigo(email, codigo):
+
+    remitente = "fitpower48@gmail.com"
+    password = "pbhwxskgsubxjpvv"
+
+    mensaje = MIMEText(f"Tu código de recuperación es: {codigo}")
+    mensaje["Subject"] = "Recuperación de contraseña"
+    mensaje["From"] = remitente
+    mensaje["To"] = email
+
+    servidor = smtplib.SMTP("smtp.gmail.com", 587)
+    servidor.starttls()
+    servidor.login(remitente, password)
+    servidor.send_message(mensaje)
+    servidor.quit()
+
+
+@app.get("/recover-password", response_class=HTMLResponse)
+def recover_password_page(request: Request):
+    return templates.TemplateResponse("recover-password.html", {"request": request})
+
+
+@app.post("/recover-password")
+async def recover_password(email: str = Form(...)):
+
+    codigo = generar_codigo()
+
+    enviar_codigo(email, codigo)
+
+    return {"message": "Código enviado"}
 

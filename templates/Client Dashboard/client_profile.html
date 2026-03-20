@@ -3,157 +3,529 @@
 
 <head>
     <meta charset="utf-8">
-    <title>My Profile | FitPower Pro</title>
-
+    <title>Dashboard | FitPower </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/static/css/style.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <style>
+        :root {
+            --primary-red: #DC143C; /* Crimson Red */
+            --dark-black: #111111;
+            --soft-black: #1A1A1A;
+            --light-bg: #F8F9FA;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-black);
+        }
+
+        /* SIDEBAR STYLES */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--dark-black);
+            color: white;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+        }
+
+        .sidebar .brand {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar .brand h3 {
+            margin: 0;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar .brand span {
+            color: var(--primary-red);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            padding: 15px 25px;
+            color: #ccc;
+            text-decoration: none;
+            transition: 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu li a:hover, 
+        .sidebar-menu li a.active {
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border-left-color: var(--primary-red);
+        }
+
+        .sidebar-menu li a i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            background: #fff;
+        }
+
+        /* TOP NAVBAR */
+        .top-navbar {
+            padding: 15px 30px;
+            background: white;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .user-dropdown .btn {
+            font-weight: 500;
+            color: var(--dark-black);
+        }
+
+        /* HERO HEADER */
+        .hero-header {
+            background: linear-gradient(135deg, var(--dark-black) 0%, var(--soft-black) 100%);
+            color: white;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-header::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background: var(--primary-red);
+            clip-path: polygon(30% 0, 100% 0, 100% 100%, 0% 100%);
+            opacity: 0.8;
+        }
+
+        .hero-title {
+            font-weight: 700;
+            font-size: 2rem;
+        }
+
+        /* CARDS STYLES */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-stat {
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .card-stat .icon-box {
+            width: 50px;
+            height: 50px;
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--primary-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* PROFILE WIDGET */
+        .profile-widget {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--primary-red);
+            margin-bottom: 15px;
+            object-fit: cover;
+        }
+
+        /* EXERCISE CARDS */
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary-red);
+            padding-left: 15px;
+            color: var(--dark-black);
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .exercise-icon {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            background: var(--dark-black);
+        }
+
+        .exercise-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .btn-workout {
+            background: var(--primary-red);
+            color: white;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .btn-workout:hover {
+            background: var(--dark-black);
+            color: white;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .hamburger {
+                display: block !important;
+            }
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <!-- NAVBAR -->
-    <div class="container-fluid p-0 nav-bar">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+        <div class="brand">
+            <h3>Fit<span>Power</span></h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fas fa-user"></i> My Profile</a></li>
+            <li><a href="#"><i class="fas fa-dumbbell"></i> Workouts</a></li>
+            <li><a href="#"><i class="fas fa-heartbeat"></i> Health Stats</a></li>
+            <li><a href="#"><i class="fas fa-calendar-alt"></i> Schedule</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            <li class="mt-5"><a href="/login" class="text-danger"><i class="fas fa-sign-out-alt"></i> Log Out</a></li>
+        </ul>
+    </nav>
 
-            <a href="/" class="navbar-brand">
-                <h2 class="m-0 text-uppercase text-white">FitPower Pro</h2>
-            </a>
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        
+        <!-- TOP NAVBAR -->
+        <div class="top-navbar">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-bars hamburger mr-3" onclick="toggleSidebar()"></i>
+                <span class="d-none d-md-block text-muted">Welcome back, {{ user.full_name }}</span>
+            </div>
+            
+            <div class="dropdown user-dropdown">
+                <button class="btn d-flex align-items-center" type="button" data-toggle="dropdown">
+                    <img src="/static/img/user.png" class="rounded-circle mr-2" width="35" height="35">
+                    <span>{{ user.full_name }}</span>
+                    <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i> Profile</a>
+                    <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i> Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="/login"><i class="fas fa-sign-out-alt mr-2"></i> Logout</a>
+                </div>
+            </div>
+        </div>
 
-            <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- HERO HEADER -->
+        <div class="hero-header">
+            <h1 class="hero-title">Hello, {{ user.full_name }}!</h1>
+            <p class="text-white-50">Ready to crush your goals today?</p>
+        </div>
 
-            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <div class="container-fluid p-4">
+            
+            <!-- PROFILE & STATS ROW -->
+            <div class="row mb-4">
+                <!-- Profile Summary -->
+                <div class="col-lg-4 mb-4">
+                    <div class="profile-widget">
+                        <img src="/static/img/user.png" class="profile-img" alt="User">
+                        <h4 class="mb-1">{{ user.full_name }}</h4>
+                        <p class="text-muted mb-3">Premium Member</p>
+                        
+                        <span class="badge badge-pill py-2 px-3" style="background: rgba(220,20,60,0.1); color: var(--primary-red);">
+                            <i class="fas fa-check-circle mr-1"></i> Verified Account
+                        </span>
 
-                <!-- LINKS -->
-                <div class="navbar-nav ml-auto">
+                        <hr class="my-4">
 
-                    <a href="/" class="nav-item nav-link">Home</a>
-                    <a href="/class" class="nav-item nav-link">Classes</a>
-                    <a href="/feature" class="nav-item nav-link">Features</a>
-                    <a href="/contact" class="nav-item nav-link">Contact</a>
-
-                    <!-- USER DROPDOWN -->
-                    <div class="nav-item dropdown">
-
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" data-toggle="dropdown">
-
-                            <i class="fas fa-user-circle mr-2"></i>
-                            {{ user.full_name }}
-
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-right">
-
-                            <a href="/client/profile" class="dropdown-item">
-                                <i class="fas fa-user mr-2"></i> Profile
-                            </a>
-
-                            <a href="/client/settings" class="dropdown-item">
-                                <i class="fas fa-cog mr-2"></i> Settings
-                            </a>
-
-                            <div class="dropdown-divider"></div>
-
-                            <a href="/" class="dropdown-item text-danger">
-                                <i class="fas fa-sign-out-alt mr-2"></i> Log Out
-                            </a>
-
+                        <div class="row text-left">
+                            <div class="col-6">
+                                <small class="text-muted d-block">EMAIL</small>
+                                <p class="font-weight-bold text-truncate">{{ user.email }}</p>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted d-block">STATUS</small>
+                                <p class="font-weight-bold text-success">Active</p>
+                            </div>
                         </div>
-
+                        
+                        <button class="btn btn-dark btn-block mt-2 rounded-pill">
+                            <i class="fas fa-edit mr-2"></i> Edit Profile
+                        </button>
                     </div>
-
                 </div>
 
-            </div>
-
-        </nav>
-    </div>
-
-    <!-- HEADER -->
-    <div class="container-fluid bg-primary text-white text-center py-5">
-
-        <h1 class="display-4">Welcome {{ user.full_name }} 👋</h1>
-        <p>Manage your account and fitness progress</p>
-
-    </div>
-
-    <!-- PROFILE -->
-    <div class="container mt-5">
-
-        <div class="row">
-
-            <!-- PHOTO -->
-            <div class="col-md-4">
-
-                <div class="card shadow text-center p-4">
-
-                    <img src="/static/img/user.png" class="rounded-circle mx-auto" width="130">
-
-                    <h4 class="mt-3">{{ user.full_name }}</h4>
-
-                    <span class="badge badge-success">
-                        Verified Account ✅
-                    </span>
-
-                </div>
-
-            </div>
-
-            <!-- INFO -->
-            <div class="col-md-8">
-
-                <div class="card shadow p-4">
-
-                    <h4 class="mb-4">User Information</h4>
-
+                <!-- Stats Cards -->
+                <div class="col-lg-8">
                     <div class="row">
-
-                        <div class="col-md-6">
-                            <p><strong>Name</strong></p>
-                            <p>{{ user.full_name }}</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="card card-stat p-3 h-100">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-box mr-3">
+                                        <i class="fas fa-weight"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted mb-0">Current Weight</h6>
+                                        <h3 class="mb-0">75 <small class="text-muted">kg</small></h3>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <p><strong>Email</strong></p>
-                            <p>{{ user.email }}</p>
+                        <div class="col-md-6 mb-4">
+                            <div class="card card-stat p-3 h-100">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-box mr-3">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted mb-0">Avg Heart Rate</h6>
+                                        <h3 class="mb-0">72 <small class="text-muted">bpm</small></h3>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
+                        <div class="col-md-6 mb-4">
+                            <div class="card card-stat p-3 h-100">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-box mr-3">
+                                        <i class="fas fa-fire"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted mb-0">Calories Burned</h6>
+                                        <h3 class="mb-0">1,250 <small class="text-muted">kcal</small></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <div class="card card-stat p-3 h-100">
+                                <div class="d-flex align-items-center">
+                                    <div class="icon-box mr-3">
+                                        <i class="fas fa-running"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-muted mb-0">Workouts Done</h6>
+                                        <h3 class="mb-0">12 <small class="text-muted">this month</small></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
 
-                    <hr>
+            <!-- WORKOUTS SECTION -->
+            <h3 class="section-title mt-4 mb-4">Your Workout Plans</h3>
+            <div class="row">
+                
+                <!-- Card 1: Aerobics -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card exercise-card">
+                        <div class="exercise-icon" style="background: linear-gradient(45deg, #e74c3c, #c0392b);">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="exercise-body">
+                            <div>
+                                <h5>Aerobics</h5>
+                                <p class="text-muted small">High energy cardio sessions to boost your stamina and burn fat fast.</p>
+                            </div>
+                            <a class="btn btn-workout btn-block" href="/aerobics">Start Workout</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2: Strength -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card exercise-card">
+                        <div class="exercise-icon" style="background: linear-gradient(45deg, #111, #333);">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="exercise-body">
+                            <div>
+                                <h5>Strength Training</h5>
+                                <p class="text-muted small">Build muscle mass and power with heavy lifting routines.</p>
+                            </div>
+                            <button class="btn btn-workout btn-block">Start Workout</button>
+                        </div>
+                    </div>
+                </div>
 
-                    <button class="btn btn-primary">
-                        <i class="fas fa-edit"></i>
-                        Edit Profile
-                    </button>
+                <!-- Card 3: HIIT -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card exercise-card">
+                        <div class="exercise-icon" style="background: linear-gradient(45deg, #DC143C, #8B0000);">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="exercise-body">
+                            <div>
+                                <h5>HIIT</h5>
+                                <p class="text-muted small">High Intensity Interval Training for maximum calorie burn.</p>
+                            </div>
+                            <button class="btn btn-workout btn-block">Start Workout</button>
+                        </div>
+                    </div>
+                </div>
 
-                    <a href="/logout" class="btn btn-danger">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Log Out
-                    </a>
+                <!-- Card 4: Yoga -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card exercise-card">
+                        <div class="exercise-icon" style="background: linear-gradient(45deg, #2c3e50, #4ca1af);">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <div class="exercise-body">
+                            <div>
+                                <h5>Yoga & Mobility</h5>
+                                <p class="text-muted small">Improve flexibility, balance, and mental focus.</p>
+                            </div>
+                            <button class="btn btn-workout btn-block">Start Workout</button>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Card 5: Core -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card exercise-card">
+                        <div class="exercise-icon" style="background: linear-gradient(45deg, #000, #434343);">
+                            <i class="fas fa-fire-alt"></i>
+                        </div>
+                        <div class="exercise-body">
+                            <div>
+                                <h5>Core & Abs</h5>
+                                <p class="text-muted small">Targeted exercises for a stronger midsection and six-pack.</p>
+                            </div>
+                            <button class="btn btn-workout btn-block">Start Workout</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6: Crossfit -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card exercise-card">
+                        <div class="exercise-icon" style="background: linear-gradient(45deg, #c0392b, #8e44ad);">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <div class="exercise-body">
+                            <div>
+                                <h5>CrossFit</h5>
+                                <p class="text-muted small">Varied functional movements performed at high intensity.</p>
+                            </div>
+                            <button class="btn btn-workout btn-block">Start Workout</button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
         </div>
 
+        <!-- Footer -->
+        <footer class="bg-dark text-white py-4 mt-5">
+            <div class="container text-center">
+                <p class="mb-0">&copy; 2023 FitPower . All Rights Reserved.</p>
+            </div>
+        </footer>
+
     </div>
 
     <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-
             const urlParams = new URLSearchParams(window.location.search);
             const success = urlParams.get("success");
 
@@ -161,20 +533,20 @@
                 Swal.fire({
                     icon: "success",
                     title: "Login Successful 🎉",
-                    text: "Welcome",
-                    timer: 2000,
-                    showConfirmButton: false
+                    text: "Welcome back, {{ user.full_name }}!",
+                    timer: 2500,
+                    showConfirmButton: false,
+                    background: '#fff',
+                    iconColor: '#DC143C'
                 });
             }
             window.history.replaceState({}, document.title, "/client/profile");
         });
-    </script>
 
-    
-    <script src="/static/lib/easing/easing.min.js"></script>
-    <script src="/static/lib/waypoints/waypoints.min.js"></script>
-    <script src="/static/mail/jqBootstrapValidation.min.js"></script>
-    <script src="/static/mail/contact.js"></script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+    </script>
 </body>
 
 </html>
