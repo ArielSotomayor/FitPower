@@ -4,50 +4,167 @@
         <meta charset="utf-8">
         <title>{% block title %}FitPower Pro{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="keywords" content="Gym, Fitness, Workout, Training">
-        <meta name="description" content="FitPower Pro - Plataforma moderna de entrenamiento y fitness">
+        <meta name="keywords" content="Gym, Fitness, Workout, Training, El Salvador">
+        <meta name="description" content="FitPower Pro - Plataforma moderna de entrenamiento y fitness en El Salvador">
         <link rel="icon" href="/static/img/favicon.ico">
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
         <link rel="stylesheet" href="/static/lib/flaticon/font/flaticon.css">
         <link rel="stylesheet" href="/static/css/style.min.css">
+        
+        <!-- Scripts de Terceros -->
         <script src="https://unpkg.com/htmx.org@1.9.10"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://unpkg.com/alpinejs@3.x.x" defer></script>
         <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
         <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" defer></script>
+
+        <!-- Estilos Personalizados para Mejora Visual -->
+        <style>
+            :root {
+                --primary-color: #f7b801; /* Amarillo Dorado */
+                --secondary-color: #1a1a1a; /* Negro suave */
+                --accent-color: #333333;
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                color: #444;
+            }
+
+            /* Navbar Mejoras */
+            .nav-bar {
+                background-color: rgba(0, 0, 0, 0.9) !important;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            }
+            .navbar-brand h1 {
+                background: linear-gradient(45deg, var(--primary-color), #fff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+            .navbar-nav .nav-link {
+                font-weight: 500;
+                transition: transform 0.2s;
+            }
+            .navbar-nav .nav-link:hover {
+                transform: translateY(-2px);
+                color: var(--primary-color) !important;
+            }
+
+            /* Page Header Moderno */
+            .page-header {
+                background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(26,26,26,0.9) 100%), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+                background-size: cover;
+                background-position: center;
+                position: relative;
+            }
+            .page-header h4 {
+                letter-spacing: 2px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            }
+
+            /* Tarjetas de Información */
+            .info-card {
+                background: #fff;
+                border-radius: 15px;
+                padding: 30px 20px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+                transition: all 0.3s ease;
+                border-top: 4px solid transparent;
+                height: 100%;
+            }
+            .info-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+                border-top-color: var(--primary-color);
+            }
+            .info-card i {
+                background: rgba(247, 184, 1, 0.1);
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 20px;
+                color: var(--primary-color);
+                font-size: 24px;
+            }
+
+            /* Formulario */
+            .contact-form .form-control {
+                border: 2px solid #eee;
+                border-radius: 8px;
+                padding: 15px;
+                height: auto;
+                font-size: 1rem;
+                transition: border-color 0.3s;
+            }
+            .contact-form .form-control:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 0.2rem rgba(247, 184, 1, 0.25);
+            }
+            .btn-outline-primary {
+                border: 2px solid var(--primary-color);
+                color: var(--primary-color);
+                border-radius: 50px;
+                padding: 12px 35px;
+                font-weight: 600;
+                transition: all 0.3s;
+            }
+            .btn-outline-primary:hover {
+                background: var(--primary-color);
+                color: #000;
+                transform: scale(1.05);
+            }
+
+            /* Mapa */
+            .map-container {
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+            /* Footer */
+            .footer {
+                background-color: #1a1a1a !important;
+            }
+            .footer a:hover {
+                color: var(--primary-color) !important;
+                text-decoration: none;
+            }
+        </style>
+
         <script defer>
             document.addEventListener('DOMContentLoaded', () => {
                 AOS.init({
-                    duration: 1000, // duración de las animaciones
-                    once: true      // animar solo la primera vez que aparece
+                    duration: 800, 
+                    once: true,
+                    easing: 'ease-in-out'
                 });
             });
         </script>
     </head>
     
-    <body class="bg-white">
+    <body class="bg-light">
         <!-- Navbar Start -->
         <div class="container-fluid p-0 nav-bar" data-aos="fade-down">
             <nav class="navbar navbar-expand-lg navbar-dark py-3">
-                <!-- Logo -->
                 <a href="/" class="navbar-brand">
-                    <h1 class="m-0 display-4 font-weight-bold text-uppercase text-white">FitPower Pro</h1>
+                    <h1 class="m-0 display-5 font-weight-bold text-uppercase">FitPower Pro</h1>
                 </a>
-                <!-- Botón responsive -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <!-- Menú colapsable -->
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav ml-auto p-2">
-                        <!-- Enlaces normales -->
-                        <a href="/" class="nav-item nav-link active">Home</a>
+                        <a href="/" class="nav-item nav-link">Home</a>
                         <a href="/about" class="nav-item nav-link">About Us</a>
-                        <a href="/feature" class="nav-item nav-link">Our Features</a>
+                        <a href="/feature" class="nav-item nav-link">Features</a>
                         <a href="/class" class="nav-item nav-link">Classes</a>
-                        <a href="/contact" class="nav-item nav-link">Contact</a>
-                        <!-- Dropdown User -->
+                        <a href="/contact" class="nav-item nav-link active">Contact</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-toggle="dropdown">
                                 <i class="fas fa-user mr-1"></i> User
@@ -62,48 +179,26 @@
             </nav>
         </div>
         <!-- Navbar End -->
-        <!-- Animaciones -->
+
+        <!-- Animaciones Logo -->
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                // Inicializa AOS
-                AOS.init({ duration: 1000, once: true });
-    
-                // Animación del logo con Anime.js
                 anime({
                     targets: '.nav-bar h1',
-                    translateY: [-50, 0],
+                    translateX: [-50, 0],
                     opacity: [0, 1],
                     duration: 1200,
                     easing: 'easeOutExpo'
                 });
             });
         </script>
-        <style>
-            /* Hover animado en links */
-            .navbar-nav .nav-link:hover {
-                color: #ffd700;
-                /* Dorado al pasar el mouse */
-                transition: color 0.3s ease;
-            }
-    
-            /* Dropdown menú suavizado */
-            .dropdown-menu {
-                transition: all 0.3s ease;
-            }
-    
-            /* Responsive padding y estilo */
-            @media (max-width: 768px) {
-                .navbar-nav {
-                    padding: 0.5rem 0;
-                }
-            }
-        </style>
+
     <!-- Page Header Start -->
     <div class="container-fluid page-header mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
-            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Contact Us</h4>
-            <div class="d-inline-flex">
-                <p class="m-0 text-white"><a class="text-white" href="">Home</a></p>
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold" data-aos="zoom-in">Contact Us</h4>
+            <div class="d-inline-flex" data-aos="fade-up" data-aos-delay="200">
+                <p class="m-0 text-white"><a class="text-white" href="/">Home</a></p>
                 <p class="m-0 text-white px-2">/</p>
                 <p class="m-0 text-white">Contact Us</p>
             </div>
@@ -111,56 +206,73 @@
     </div>
     <!-- Page Header End -->
 
-
     <!-- Contact Start -->
-    <div class="container pt-5">
+    <div class="container py-5">
         <div class="d-flex flex-column text-center mb-5">
-            <h4 class="text-primary font-weight-bold">Get In Touch</h4>
-            <h4 class="display-4 font-weight-bold">Email Us For Any Query</h4>
+            <h5 class="text-primary font-weight-bold mb-2" style="letter-spacing: 2px; text-transform: uppercase;">Get In Touch</h5>
+            <h2 class="display-4 font-weight-bold">Email Us For Any Query</h2>
         </div>
-        <div class="row px-3 pb-2">
-            <div class="col-sm-4 text-center mb-3">
-                <i class="fa fa-2x fa-map-marker-alt mb-3 text-primary"></i>
-                <h4 class="font-weight-bold">Address</h4>
-                <p>123 Street, New York, USA</p>
+        
+        <!-- Tarjetas de Información -->
+        <div class="row px-3 pb-5 mb-4 justify-content-center">
+            <div class="col-sm-4 text-center mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="info-card">
+                    <i class="fa fa-map-marker-alt"></i>
+                    <h5 class="font-weight-bold mt-2">Address</h5>
+                    <p class="text-muted mb-0">Final Av. Los Proceres, San Salvador, El Salvador</p>
+                </div>
             </div>
-            <div class="col-sm-4 text-center mb-3">
-                <i class="fa fa-2x fa-phone-alt mb-3 text-primary"></i>
-                <h4 class="font-weight-bold">Phone</h4>
-                <p>+012 345 6789</p>
+            <div class="col-sm-4 text-center mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="info-card">
+                    <i class="fa fa-phone-alt"></i>
+                    <h5 class="font-weight-bold mt-2">Phone</h5>
+                    <p class="text-muted mb-0">+503 2222 5555</p>
+                </div>
             </div>
-            <div class="col-sm-4 text-center mb-3">
-                <i class="far fa-2x fa-envelope mb-3 text-primary"></i>
-                <h4 class="font-weight-bold">Email</h4>
-                <p>info@example.com</p>
+            <div class="col-sm-4 text-center mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="info-card">
+                    <i class="fa fa-envelope"></i>
+                    <h5 class="font-weight-bold mt-2">Email</h5>
+                    <p class="text-muted mb-0">info@fitpowerpro.sv</p>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 pb-5">
-                <iframe style="width: 100%; height: 392px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+        <!-- Mapa y Formulario -->
+        <div class="row align-items-stretch">
+            <div class="col-md-6 mb-5" data-aos="fade-right">
+                <div class="map-container h-100">
+                    <!-- MAPA ACTUALIZADO A EL SALVADOR -->
+                    <iframe style="width: 100%; height: 100%; min-height: 450px; border:0;" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.123456789!2d-89.21858668585761!3d13.694185590306862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f63306b0ed8c5e7%3A0x7f5b1b5c5f5f5f5f!2sSan%20Salvador%2C%20El%20Salvador!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
             </div>
-            <div class="col-md-6 pb-5">
-                <div class="contact-form">
+            <div class="col-md-6 mb-5" data-aos="fade-left">
+                <div class="contact-form bg-white p-5 rounded-lg shadow-sm h-100">
                     <div id="success"></div>
                     <form name="sentMessage" id="contactForm" novalidate="novalidate">
-                        <div class="control-group">
-                            <input type="text" class="form-control" id="name" placeholder="Your Name" required="required" data-validation-required-message="Please enter your name" />
+                        <div class="control-group mb-3">
+                            <input type="text" class="form-control" id="name" placeholder="Your Name" required="required" />
                             <p class="help-block text-danger"></p>
                         </div>
-                        <div class="control-group">
-                            <input type="email" class="form-control" id="email" placeholder="Your Email" required="required" data-validation-required-message="Please enter your email" />
+                        <div class="control-group mb-3">
+                            <input type="email" class="form-control" id="email" placeholder="Your Email" required="required" />
                             <p class="help-block text-danger"></p>
                         </div>
-                        <div class="control-group">
-                            <input type="text" class="form-control" id="subject" placeholder="Subject" required="required" data-validation-required-message="Please enter a subject" />
+                        <div class="control-group mb-3">
+                            <input type="text" class="form-control" id="subject" placeholder="Subject" required="required" />
                             <p class="help-block text-danger"></p>
                         </div>
-                        <div class="control-group">
-                            <textarea class="form-control" rows="6" id="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
+                        <div class="control-group mb-4">
+                            <textarea class="form-control" rows="5" id="message" placeholder="Message" required="required"></textarea>
                             <p class="help-block text-danger"></p>
                         </div>
-                        <div>
-                            <button class="btn btn-outline-primary" type="submit" id="sendMessageButton">Send Message</button>
+                        <div class="text-center">
+                            <button class="btn btn-outline-primary w-100" type="submit" id="sendMessageButton">Send Message <i class="fas fa-paper-plane ml-2"></i></button>
                         </div>
                     </form>
                 </div>
@@ -169,82 +281,62 @@
     </div>
     <!-- Contact End -->
 
-
     <!-- Footer Start -->
     <div class="footer container-fluid mt-5 py-5 px-sm-3 px-md-5 text-white">
         <div class="row pt-5">
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="text-primary mb-4">Get In Touch</h4>
-                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
-                <p><i class="fa fa-phone-alt mr-2"></i>+012 345 67890</p>
-                <p><i class="fa fa-envelope mr-2"></i>info@example.com</p>
+                <p><i class="fa fa-map-marker-alt mr-2 text-primary"></i>San Salvador, El Salvador</p>
+                <p><i class="fa fa-phone-alt mr-2 text-primary"></i>+503 2222 5555</p>
+                <p><i class="fa fa-envelope mr-2 text-primary"></i>info@fitpowerpro.sv</p>
                 <div class="d-flex justify-content-start mt-4">
-                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 40px; height: 40px;" href="#"><i class="fab fa-instagram"></i></a>
+                    <a class="btn btn-outline-light btn-social mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-outline-light btn-social mr-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-outline-light btn-social mr-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="btn btn-outline-light btn-social" href="#"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="text-primary mb-4">Quick Links</h4>
                 <div class="d-flex flex-column justify-content-start">
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>About Us</a>
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Features</a>
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Classes</a>
-                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                    <a class="text-white mb-2" href="/"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                    <a class="text-white mb-2" href="/about"><i class="fa fa-angle-right mr-2"></i>About Us</a>
+                    <a class="text-white mb-2" href="/feature"><i class="fa fa-angle-right mr-2"></i>Our Features</a>
+                    <a class="text-white mb-2" href="/class"><i class="fa fa-angle-right mr-2"></i>Classes</a>
+                    <a class="text-white" href="/contact"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="text-primary mb-4">Popular Links</h4>
                 <div class="d-flex flex-column justify-content-start">
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>About Us</a>
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Our Features</a>
-                    <a class="text-white mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>Classes</a>
-                    <a class="text-white" href="#"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                    <a class="text-white mb-2" href="/"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                    <a class="text-white mb-2" href="/about"><i class="fa fa-angle-right mr-2"></i>About Us</a>
+                    <a class="text-white mb-2" href="/feature"><i class="fa fa-angle-right mr-2"></i>Our Features</a>
+                    <a class="text-white mb-2" href="/class"><i class="fa fa-angle-right mr-2"></i>Classes</a>
+                    <a class="text-white" href="/contact"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-5">
                 <h4 class="text-primary mb-4">Opening Hours</h4>
                 <h5 class="text-white">Monday - Friday</h5>
-                <p>8.00 AM - 8.00 PM</p>
+                <p>6.00 AM - 10.00 PM</p>
                 <h5 class="text-white">Saturday - Sunday</h5>
-                <p>2.00 PM - 8.00 PM</p>
+                <p>8.00 AM - 8.00 PM</p>
             </div>
         </div>
-        <div class="container border-top border-dark pt-5">
+        <div class="container border-top border-secondary pt-5 mt-5">
             <p class="m-0 text-center text-white">
-                &copy; <a class="text-white font-weight-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed by
-                <a class="text-white font-weight-bold" href="https://htmlcodex.com">HTML Codex</a>
+                &copy; <a class="text-white font-weight-bold" href="#">FitPower Pro</a>. All Rights Reserved. 
             </p>
         </div>
     </div>
     <!-- Footer End -->
-         <!-- Back to Top -->
-    <a href="#" class="btn btn-outline-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-    <style>
-        .back-to-top {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.4s ease;
-            z-index: 999;
-        }
 
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-    </style>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-outline-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+    
     <script>
         const backToTop = document.querySelector('.back-to-top');
-
-        // Mostrar / ocultar botón
         window.addEventListener('scroll', function () {
             if (window.scrollY > 300) {
                 backToTop.classList.add('show');
@@ -252,42 +344,17 @@
                 backToTop.classList.remove('show');
             }
         });
-
-        // Animación personalizada al subir
         backToTop.addEventListener('click', function (e) {
             e.preventDefault();
-
-            const start = window.pageYOffset;
-            const duration = 1200;
-            const startTime = performance.now();
-
-            function scrollAnimation(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-
-                const ease = 1 - Math.pow(1 - progress, 3);
-
-                window.scrollTo(0, start * (1 - ease));
-
-                if (progress < 1) {
-                    requestAnimationFrame(scrollAnimation);
-                }
-            }
-
-            requestAnimationFrame(scrollAnimation);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
+
     <!-- JavaScript Libraries -->
     <script src="/static/lib/easing/easing.min.js"></script>
     <script src="/static/lib/waypoints/waypoints.min.js"></script>
     <script src="/static/mail/jqBootstrapValidation.min.js"></script>
     <script src="/static/mail/contact.js"></script>
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
     <script src="/static/js/main.js"></script>
 </body>
-
 </html>

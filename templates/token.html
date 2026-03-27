@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>FitPower - Verify Code</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="icon" href="/static/img/favicon.ico">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.min.css">
+
+    <!-- Animaciones -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" defer></script>
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body {
+            background-image: url('/static/img/carousel-1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Oswald', sans-serif;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Capa oscura */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 0;
+        }
+
+        /* Navbar y Footer sobre el fondo */
+        .nav-bar,
+        .footer {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Contenedor Principal que CENTRA el contenido */
+        .main-content-wrapper {
+            flex: 1;
+            /* Ocupa todo el espacio restante */
+            display: flex;
+            align-items: center;
+            /* Centrado Vertical */
+            justify-content: center;
+            /* Centrado Horizontal */
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+
+        /* Estilo del contenedor del formulario */
+        .form-container {
+            background: rgba(29, 29, 29, 0.95);
+            border: 2px solid #e53935;
+            /* Borde Rojo */
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            max-width: 450px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Encabezado decorativo - ESCALA DE ROJOS */
+        .form-header {
+            background: linear-gradient(135deg, #b71c1c, #e53935);
+            padding: 25px;
+            text-align: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: 10px;
+        }
+
+        .form-header h2 {
+            color: #fff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        /* Inputs personalizados */
+        .custom-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 18px;
+            font-size: 1.5rem;
+            /* Texto más grande para el código */
+            text-align: center;
+            letter-spacing: 8px;
+            /* Espaciado tipo código */
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .custom-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #e53935;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(229, 57, 53, 0.4);
+        }
+
+        .custom-input::placeholder {
+            color: #888;
+            letter-spacing: normal;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        /* Botón principal */
+        .btn-submit {
+            background: linear-gradient(to right, #b71c1c, #e53935);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: #fff;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(229, 57, 53, 0.5);
+            background: linear-gradient(to right, #e53935, #b71c1c);
+            color: #fff;
+        }
+
+        /* Icono decorativo fondo */
+        .lock-icon {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.05);
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+
+        .text-primary {
+            color: #e53935 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-dark py-3">
+            <div class="container">
+                <a href="/" class="navbar-brand">
+                    <h1 class="m-0 display-5 font-weight-bold text-uppercase text-white">FitPower</h1>
+                </a>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Main Content Wrapper (Centrado Perfecto) -->
+    <div class="main-content-wrapper">
+        <div class="form-container" data-aos="zoom-in" data-aos-duration="800">
+
+            <!-- Icono de fondo decorativo -->
+            <i class="fas fa-shield-alt lock-icon"></i>
+
+            <div class="form-header">
+                <h2><i class="fas fa-key mr-2"></i> Verify Code</h2>
+            </div>
+
+            <div class="p-5 pt-4">
+                <p class="text-light mb-5 text-center" style="opacity: 0.9; font-size: 1.1rem;">
+                    We have sent a verification code to your email.<br>Please enter it below.
+                </p>
+
+                <div class="form-group mb-4">
+                    <!-- Input simple y centrado -->
+                    <input type="text" id="code" placeholder="Enter code" class="form-control custom-input rounded"
+                        maxlength="6" inputmode="numeric" pattern="[0-9]*"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+
+                <button onclick="verifyCode()" class="btn btn-block btn-submit w-100 rounded">
+                    Verify Code
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Main Content End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-white py-3 mt-auto footer">
+        <div class="container text-center">
+            <p class="mb-0 small">&copy; <a class="text-primary font-weight-bold" href="#">FitPower</a>. All Rights
+                Reserved.</p>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Inicializar AOS y Anime.js
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({ once: true });
+
+            anime({
+                targets: '.form-container',
+                translateY: [-50, 0],
+                opacity: [0, 1],
+                duration: 1200,
+                easing: 'easeOutExpo',
+                delay: 100
+            });
+        });
+
+        // Variable renderizada por el backend
+        const email = "{{ email }}";
+
+        async function verifyCode() {
+            const code = document.getElementById("code").value;
+
+            // Validación simple visual
+            if (!code) {
+                document.getElementById("code").style.borderColor = "#ff0000";
+                return;
+            }
+
+            const response = await fetch("/verify-recovery-code", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
+                    email: email,
+                    code: code
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.status === "success") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Verified!",
+                    background: '#333',
+                    color: '#fff',
+                    confirmButtonColor: '#e53935'
+                }).then(() => {
+                    window.location.href = "/change-password?email=" + email;
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: data.message,
+                    background: '#333',
+                    color: '#fff',
+                    confirmButtonColor: '#e53935'
+                });
+            }
+        }
+        
+    </script>
+</body>
+
+</html>

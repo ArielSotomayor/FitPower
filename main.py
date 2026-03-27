@@ -690,19 +690,17 @@ def generar_codigo():
 
 def enviar_codigo(email, codigo):
 
-    remitente = "fitpower48@gmail.com"
-    password = "pbhwxskgsubxjpvv"
+    remitente = "fitpowerpro48@gmail.com"
+    password = "kpaq qcwz jrbm jruk"
 
     mensaje = MIMEText(f"Tu código de recuperación es: {codigo}")
     mensaje["Subject"] = "Recuperación de contraseña"
     mensaje["From"] = remitente
     mensaje["To"] = email
 
-    servidor = smtplib.SMTP("smtp.gmail.com", 587)
-    servidor.starttls()
-    servidor.login(remitente, password)
-    servidor.send_message(mensaje)
-    servidor.quit()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as servidor:
+        servidor.login(remitente, password)
+        servidor.send_message(mensaje)
 
 
 @app.get("/recover-password", response_class=HTMLResponse)
@@ -711,11 +709,98 @@ def recover_password_page(request: Request):
 
 
 @app.post("/recover-password")
-async def recover_password(email: str = Form(...)):
+async def recover_password(
+    email: str = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    user = db.query(User).filter(User.email == email).first()
+
+    if not user:
+        return {"status": "error", "message": "Usuario no encontrado"}
 
     codigo = generar_codigo()
 
+    # 🔥 GUARDAR EN DB (ESTO ES LO QUE TE FALTA)
+    user.verification_code = codigo
+    user.verification_expires = datetime.utcnow() + timedelta(minutes=10)
+
+    db.commit()
+
     enviar_codigo(email, codigo)
 
-    return {"message": "Código enviado"}
+    return {
+        "status": "success",
+        "message": "Código enviado"
+    }
 
+@app.get("/token", response_class=HTMLResponse)
+def token_page(request: Request, email: str):
+    return templates.TemplateResponse("token.html", {"request": request, "email": email})
+
+@app.post("/verify-recovery-code")
+def verify_recovery_code(
+    email: str = Form(...),
+    code: str = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    user = db.query(User).filter(User.email == email).first()
+
+    if not user:
+        return {"status": "error", "message": "Usuario no encontrado"}
+
+    if str(user.verification_code).strip() != str(code).strip():
+        return {"status": "error", "message": "Código incorrecto"}
+
+    if datetime.utcnow() > user.verification_expires:
+        return {"status": "error", "message": "Código expirado"}
+
+    # 🔥 CLAVE: marcar como verificado
+    user.reset_code = code
+    user.reset_expiration = datetime.utcnow() + timedelta(minutes=10)
+
+    db.commit()
+
+    return {"status": "success"}
+
+
+@app.get("/change-password", response_class=HTMLResponse)
+def change_password_page(request: Request, email: str):
+    return templates.TemplateResponse(
+        "change-password.html",
+        {
+            "request": request,
+            "email": email
+        }
+    )
+
+@app.post("/change-password")
+def change_password(
+    email: str = Form(...),
+    password: str = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    user = db.query(User).filter(User.email == email).first()
+
+    if not user:
+        return {"status": "error", "message": "Usuario no encontrado"}
+
+    # 🔐 validar con lo que ya tienes
+    if not user.verification_code:
+        return {"status": "error", "message": "No autorizado"}
+
+    if datetime.utcnow() > user.verification_expires:
+        return {"status": "error", "message": "Sesión expirada"}
+
+    # 🔥 cambiar contraseña
+    user.password_hash = hash_password(password)
+
+    # 🧹 limpiar
+    user.verification_code = None
+    user.verification_expires = None
+
+    db.commit()
+
+    return {"status": "success"}
