@@ -1,2 +1,0 @@
-# FitPower
-Proyecto PTC
